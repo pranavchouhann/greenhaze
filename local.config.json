@@ -1,0 +1,8 @@
+{
+  "port": 3000,
+  "adminEmail": "admin@greenhaze.local",
+  "adminPassword": "12345678",
+  "aiApiKey": "",
+  "aiApiUrl": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+  "aiModel": "gemini-3.6-flash"
+}

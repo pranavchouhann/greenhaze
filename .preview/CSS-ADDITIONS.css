@@ -1,0 +1,72 @@
+/* === CSS ADDITIONS TO ADD TO client/src/index.css === */
+/* These should be appended at the end of the existing file */
+
+/* Skip-to-content link (accessibility) */
+.gh-skip-link {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  z-index: 100;
+  padding: 12px 20px;
+  background: var(--deep);
+  color: #fff;
+  border-radius: 0 0 8px 8px;
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+.gh-skip-link:focus { top: 0; }
+
+/* Dark mode variables and styles */
+[data-theme="dark"] { --ink:#d8eadf; --deep:#b8d8c4; --mist:#0f1f15; --sage:#1a2e22; --soft:#8fb8a0; }
+[data-theme="dark"] body { background: #0f1f15; color: #d8eadf; }
+[data-theme="dark"] .gh-header { background: rgba(15,31,21,.88); border-bottom-color: rgba(180,220,190,.08); }
+[data-theme="dark"] .gh-footer { background: linear-gradient(135deg,#0a1a10,#060e08); }
+[data-theme="dark"] .gh-chat-card { background: rgba(20,40,28,.83); border-color: rgba(84,170,118,.15); }
+[data-theme="dark"] .gh-hero { background: linear-gradient(180deg,#122818 0%,#0f1f15 70%,#0f1f15 100%); }
+[data-theme="dark"] .gh-scan-page { background: linear-gradient(180deg,#0f2218,#0f1f15 68%,#0f1f15); }
+[data-theme="dark"] .gh-schedule, [data-theme="dark"] .gh-admin { background: linear-gradient(180deg,#122818,#0f1f15 68%,#0f1f15); }
+[data-theme="dark"] .gh-hero-copy h1, [data-theme="dark"] .gh-section-heading h2, [data-theme="dark"] .gh-about h2, [data-theme="dark"] .gh-contact h2, [data-theme="dark"] .gh-page-heading h1, [data-theme="dark"] .gh-admin-heading h1, [data-theme="dark"] .gh-scan-intro h1, [data-theme="dark"] .gh-legal h1 { color: #d0e8d6; }
+[data-theme="dark"] .gh-legal article, [data-theme="dark"] .gh-login-card, [data-theme="dark"] .gh-reminder-form, [data-theme="dark"] .gh-calendar-card { background: #142a1e; border-color: rgba(84,170,118,.12); }
+[data-theme="dark"] .gh-schedule-summary { background: linear-gradient(135deg,#0e2a1a,#081c10); }
+[data-theme="dark"] .gh-chat-head-actions button, [data-theme="dark"] .gh-compose-row>button, [data-theme="dark"] .gh-message--assistant button, [data-theme="dark"] .gh-image-chip button { color: #a3c4ae; background: #1a3024; border-color: rgba(84,170,118,.2); }
+[data-theme="dark"] .gh-mobile-nav { background: rgba(15,31,21,.96); border-top-color: rgba(180,220,190,.06); }
+[data-theme="dark"] .gh-calendar-grid>span { background: #1a3024; color: #a3c4ae; }
+[data-theme="dark"] .gh-btn--quiet { color: #d8eadf; }
+
+/* Chat error message */
+.gh-chat-error { margin: 0 19px; padding: 10px 14px; background: #fef2f0; color: #b33a2a; border-radius: 12px; font-size: 11px; font-weight: 600; }
+[data-theme="dark"] .gh-chat-error { background: #3a1a14; color: #e8907a; }
+
+/* Text button utility */
+.gh-text-button { background: none; border: 0; color: var(--soft); font-size: 12px; font-weight: 700; cursor: pointer; padding: 8px 0; text-align: center; display: block; width: 100%; }
+.gh-text-button:hover { color: var(--leaf); }
+
+/* Analysis card */
+.gh-analysis-card { margin: 0 19px 12px; padding: 18px; background: var(--sage); border: 1px solid rgba(84,170,118,.18); border-radius: 16px; }
+.gh-analysis-head { display: flex; align-items: center; gap: 7px; margin-bottom: 12px; color: var(--deep); }
+.gh-analysis-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
+.gh-analysis-grid small { display: block; color: var(--soft); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+.gh-analysis-grid strong { display: block; margin-top: 3px; font-size: 13px; }
+.gh-analysis-card p { color: var(--soft); font-size: 12px; line-height: 1.7; margin: 6px 0; }
+.gh-analysis-card p strong { color: var(--ink); }
+
+/* Compose analyze button */
+.gh-compose-analyze { color: #5a7867; background: #edf7eb; border: 1px solid rgba(84,170,118,.14); border-radius: 999px; cursor: pointer; font-size: 10px; font-weight: 800; min-height: 31px; padding: 0 10px; display: inline-flex; align-items: center; gap: 5px; }
+.gh-compose-analyze:hover { background: #d8f0d4; color: #277346; }
+
+/* Compose send button */
+.gh-compose-send { color: #fff; background: linear-gradient(135deg,#286f4a,#5cb87a); border-radius: 999px; cursor: pointer; min-height: 31px; padding: 0 12px; display: inline-flex; align-items: center; }
+.gh-compose-send:hover { box-shadow: 0 4px 12px rgba(45,135,78,.3); }
+
+/* Check icon utility */
+.gh-mini-check { color: var(--leaf); font-weight: 800; }
+
+/* Dark mode toggle button in nav */
+.gh-theme-toggle {
+  width: 36px; height: 36px; display: grid; place-items: center;
+  color: var(--soft); background: transparent; border-radius: 11px; cursor: pointer;
+  border: 1px solid rgba(21,58,43,.08);
+}
+.gh-theme-toggle:hover { color: var(--leaf); background: rgba(70,157,103,.08); }
