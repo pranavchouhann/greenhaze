@@ -1,3 +1,6 @@
 node_modules/
 dist/
 local-data/
+local.config.json
+GREENHAZE/
+.preview/
