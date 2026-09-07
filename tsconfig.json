@@ -6,6 +6,7 @@
     "target": "ES2022",
     "module": "ESNext",
     "strict": true,
+    "ignoreDeprecations": "6.0",
     "lib": ["esnext", "dom", "dom.iterable"],
     "jsx": "preserve",
     "esModuleInterop": true,
