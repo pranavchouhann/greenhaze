@@ -50,6 +50,13 @@ export function verifyPassword(password, stored) {
   return actual.length === wanted.length && timingSafeEqual(actual, wanted);
 }
 
+function originFrom(req) {
+  const host = req.headers.host || "localhost";
+  const forwardedProto = String(req.headers["x-forwarded-proto"] || "").split(",")[0].trim();
+  const isLocal = host.startsWith("localhost") || host.startsWith("127.0.0.1");
+  const protocol = forwardedProto || (isLocal ? "http" : "https");
+  return `${protocol}://${host}`;
+}
 function json(res, status, body, headers = {}) {
   res.writeHead(status, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", ...headers });
   res.end(JSON.stringify(body));
@@ -855,7 +862,7 @@ export async function createLocalServer() {
       if (pathname === "/api/auth/logout" && req.method === "POST") { const token = cookieValue(req, "gh_session"); data.sessions = data.sessions.filter(entry => entry.token !== token); await save(); setCookie(res, "gh_session", "", 0); return json(res, 200, { success: true }); }
       if (pathname === "/api/auth/google" && req.method === "GET") {
         if (!config.googleClientId || !config.googleClientSecret) return json(res, 400, { error: "Google login is not configured. Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET." });
-        const redirectUri = config.googleRedirectUri || `${new URL(req.url || "/", `http://${req.headers.host}`).origin}/api/auth/google/callback`;
+        const redirectUri = config.googleRedirectUri || `${originFrom(req)}/api/auth/google/callback`;
         const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${encodeURIComponent(config.googleClientId)}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=openid%20email%20profile&access_type=offline&prompt=consent`;
         res.writeHead(302, { Location: googleAuthUrl }); res.end(); return;
       }
@@ -864,7 +871,7 @@ export async function createLocalServer() {
         const urlParams = new URLSearchParams(new URL(req.url || "/", "http://localhost").search);
         const code = urlParams.get("code");
         if (!code) return json(res, 400, { error: "Missing authorization code." });
-        const redirectUri = config.googleRedirectUri || `${new URL(req.url || "/", `http://${req.headers.host}`).origin}/api/auth/google/callback`;
+        const redirectUri = config.googleRedirectUri || `${originFrom(req)}/api/auth/google/callback`;
         try {
           const tokenResponse = await fetch("https://oauth2.googleapis.com/token", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ code, client_id: config.googleClientId, client_secret: config.googleClientSecret, redirect_uri: redirectUri, grant_type: "authorization_code" }).toString() });
           if (!tokenResponse.ok) { const errBody = await tokenResponse.text(); console.error("Google token exchange failed:", tokenResponse.status, errBody); return json(res, 400, { error: "Failed to exchange authorization code.", details: errBody }); }
