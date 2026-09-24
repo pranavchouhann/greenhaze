@@ -2,6 +2,7 @@ node_modules/
 dist/
 local-data/
 local.config.json
+.env
 GREENHAZE/
 .preview/
 g/

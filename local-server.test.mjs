@@ -13,5 +13,7 @@ test("localhost project ships with a local-only default configuration", () => {
   assert.equal(defaultConfig.port, 3000);
   assert.equal(defaultConfig.adminPassword, "");
   assert.equal(defaultConfig.aiApiKey, "");
+  assert.equal(defaultConfig.googleClientId, "");
+  assert.equal(defaultConfig.googleClientSecret, "");
   assert.match(defaultConfig.aiApiUrl, /^https:\/\//);
 });

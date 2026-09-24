@@ -8,9 +8,9 @@ import { fileURLToPath } from "node:url";
 const root = path.dirname(fileURLToPath(import.meta.url));
 const configPath = path.join(root, "local.config.json");
 const configExamplePath = path.join(root, "local.config.example.json");
-const dataDir = path.join(root, "local-data");
+const dataDir = process.env.DATA_DIR ? path.resolve(process.env.DATA_DIR) : path.join(root, "local-data");
 const dataPath = path.join(dataDir, "greenhaze.local.json");
-const publicDir = path.join(root, "dist", "public");
+const publicDir = path.join(root, "dist");
 
 export const defaultConfig = {
   port: Number(process.env.PORT) || 3000,
@@ -34,6 +34,9 @@ async function loadLocalConfig() {
   const config = { ...defaultConfig, ...fileConfig };
   if (!config.adminPassword || config.adminPassword === "CHOOSE_YOUR_OWN_PASSWORD") {
     throw new Error("Set a personal adminPassword via ADMIN_PASSWORD env var or in local.config.json before starting GreenHaze.");
+  }
+  if (!config.googleClientId || !config.googleClientSecret) {
+    throw new Error("GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET are required. Set them via env vars or local.config.json before starting GreenHaze.");
   }
   return config;
 }
@@ -829,6 +832,7 @@ export async function createLocalServer() {
     const save = () => writeJson(dataPath, data);
     if (req.method === "OPTIONS") return text(res, 204, "", { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Content-Type, Authorization", "Access-Control-Allow-Methods": "GET, POST, DELETE, OPTIONS" });
     try {
+      if (pathname === "/health" && req.method === "GET") return json(res, 200, { status: "ok", uptime: process.uptime() });
       if (pathname === "/api/config" && req.method === "GET") return json(res, 200, publicConfig(config, data));
       if (pathname === "/api/chat" && req.method === "POST") return streamChat(req, res, config, data, await body(req));
       if (pathname === "/api/analyze" && req.method === "POST") return analyzeImage(res, config, data, await body(req));
@@ -878,7 +882,7 @@ export async function createLocalServer() {
         } catch (error) { return json(res, 500, { error: `Google authentication failed: ${error.message}` }); }
       }
       if (pathname === "/api/auth/google/config" && req.method === "GET") {
-        return json(res, 200, { enabled: Boolean(config.googleClientId && config.googleClientSecret) });
+        return json(res, 200, { enabled: true });
       }
       if (pathname === "/api/admin/login" && req.method === "POST") {
         const input = await body(req); if (String(input.password || "") !== config.adminPassword) return json(res, 400, { error: "That administrator password is incorrect." });

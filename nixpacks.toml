@@ -1,0 +1,8 @@
+[phases.setup]
+nixPkgs = ["nodejs_20"]
+
+[phases.build]
+cmds = ["pnpm install --frozen-lockfile", "pnpm run build"]
+
+[deploy]
+startCommand = "node local-server.mjs"
